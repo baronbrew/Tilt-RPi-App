@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, user-scalable=no
+		initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src *;  connect-src ws:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+
+
+	<title>Tilt</title>
+
+	<style>
+		@import 'ui/css/evothings-app.css';
+	</style>
+
+	<script>
+	// Redirect console.log to Evothings Workbench.
+	if (window.hyper && window.hyper.log) { console.log = hyper.log }
+	</script>
+
+	<script src="libs/jquery/jquery.js"></script>
+	<script src="app.js"></script>
+	<script src="calapp.js"></script>
+
+</head>
+<body>
+
+	<header>
+
+		<button id=settings class="back"> <img src="ui/images/Gear_icon.svg" alt="Settings"/></button>
+
+		<img class="logotype" src="ui/images/tilt_logo.svg" alt="Tilt" />
+
+	</header>
+
+<div id="settingsdiv" class=""><hr>
+<strong>Set Beer Names</strong><br />
+<select id="beerColor">
+  <option value="RED">RED</option>
+  <option value="GREEN">GREEN</option>
+  <option value="BLACK">BLACK</option>
+  <option value="PURPLE">PURPLE</option>
+  <option value="ORANGE">ORANGE</option>
+  <option value="BLUE">BLUE</option>
+  <option value="YELLOW">YELLOW</option>
+  <option value="PINK">PINK</option>
+</select> <input id="beerName" placeholder="Baron Brew Pale Ale" name="" value="" type="text"><br />
+<button id="setBeerNameButton" class="green" onclick="setBeerName()">Set Beer Name</button>
+<br />
+<hr>
+<strong>Cloud Settings</strong><br />
+Enter Cloud URL:<br />
+<input id="cloudUrl" placeholder="https://..." name="" value="" type="url"><br />
+<input type="checkbox" id="checkCloud" onclick="saveCloudUrl(this)"> Check here to start logging data to the Cloud.<br />
+<span id="cloudResponse" style="font-size:0.8em"></span><br />
+<hr>
+<strong>Post Comment to Cloud</strong><br />
+<select id="beerColorComment">
+  <option value="RED">RED</option>
+  <option value="GREEN">GREEN</option>
+  <option value="BLACK">BLACK</option>
+  <option value="PURPLE">PURPLE</option>
+  <option value="ORANGE">ORANGE</option>
+  <option value="BLUE">BLUE</option>
+  <option value="YELLOW">YELLOW</option>
+  <option value="PINK">PINK</option>
+</select> <input id="commentPost" placeholder="Original Gravity" name="" value="" type="text"><br />
+<button id="setCommentButton" class="green" onclick="setComment()">Post Comment</button>
+<br />
+<hr>
+<strong>Calibrate Specific Gravity </strong><br />
+<select id="beerColorCal">
+  <option value="RED">RED</option>
+  <option value="GREEN">GREEN</option>
+  <option value="BLACK">BLACK</option>
+  <option value="PURPLE">PURPLE</option>
+  <option value="ORANGE">ORANGE</option>
+  <option value="BLUE">BLUE</option>
+  <option value="YELLOW">YELLOW</option>
+  <option value="PINK">PINK</option>
+</select> <br />
+<button id="setBeerNameCalButton" class="green" onclick="setTare()">TARE IN WATER</button>
+Uncalibrated SG:<br />
+<input id="measuredCal" placeholder="Tilt SG" type="text"> <input type="button" id="checkAuto" onclick="getMeasuredSG()" value="update"><br />
+Actual SG:<br /><input id="actualCal" placeholder="Actual SG" name="" value="" maxlength="5" type="text"> <input type="button" id="checkWater" onclick="" value="water"><br />
+
+<button id="setBeerNameCalButton" class="green" onclick="setCal()">Add Point</button>
+<button id="setBeerNameCalClearButton" class="green" onclick="clearCal()">Clear</button>
+<br />
+Calibration Points:
+<div id="calPointsSg">
+</div>
+<hr>
+<strong>Temperature</strong>
+<br>
+<input type="checkbox" id="checkUseCelsius" onclick="saveUseCelsius(this)"> Use Celsius <br />
+<hr>
+<strong>Calibrate Temperature</strong>
+<br>
+<select id="beerColorCalTemp">
+  <option value="RED">RED</option>
+  <option value="GREEN">GREEN</option>
+  <option value="BLACK">BLACK</option>
+  <option value="PURPLE">PURPLE</option>
+  <option value="ORANGE">ORANGE</option>
+  <option value="BLUE">BLUE</option>
+  <option value="YELLOW">YELLOW</option>
+  <option value="PINK">PINK</option>
+</select> <br />
+
+Uncalibrated Temp. :<br /><input id="measuredCalTemp" placeholder="Tilt Temp." type="text"> <input type="button" id="checkAutoTemp" onclick="getMeasuredTemp()" value="update"><br />
+Actual Temp. :<br /><input id="actualCalTemp" placeholder="Actual Temp." name="" maxlength="5" type="text"><br />
+<button id="setBeerNameCalTempButton" class="green" onclick="setCalTemp()">Add Point</button>
+<button id="setBeerNameCalTempClearButton" class="green" onclick="clearCalTemp()">Clear</button>
+<br />
+Calibration Points:
+<div id="calPointsTemp"></div>
+<hr><!-- 
+<strong>Calibration Settings</strong><br />
+<button id="BLEButton" class="green" onclick="location.href='calibration.html';">Start Calibration</button><br /><hr> -->
+<input id="serviceUrl" placeholder="Service Port" name="" value="" type="url">
+<input type="button" id="goServiceUrl" onclick="goServiceUrl()" value="go"><br />
+<hr>
+</div>
+
+	<ul id="found-beacons" class="dynamic"></ul>
+
+<p id="warning">Scanning for Tilts...<br />
+		 Make sure the Tilt is not vertical (sleep mode).
+    <br>
+    <img src="ui/images/tilt_splash.png" style="display:block; margin:auto; width:55%">
+	</p>
+</body>
+
+<script>
+$("#settingsdiv").hide();
+$("#settings").click(function(){
+        $("#settingsdiv").toggle(100);
+    });
+$("#checkWater").click(function(){
+  $("#actualCal").val("1.000");
+});
+	</script>
+</html>
